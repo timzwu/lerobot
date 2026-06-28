@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environments / secrets
+.env
+.env.local
+
+# Data & model artifacts (often large — track via DVC/HF Hub instead)
+data/
+outputs/
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+wandb/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
