@@ -19,10 +19,13 @@ library is a dependency. Code here is experiments and notes, not a shipped produ
 
 ## Environment
 
-- macOS (Apple Silicon). System Python is 3.13, but **lerobot needs Python 3.10**.
-- Use conda (Miniforge): env name `lerobot`, Python 3.10. Activate with
+- macOS (Apple Silicon). System Python is 3.13, but **lerobot needs Python >= 3.12**
+  (PyTorch >= 2.10) per the official install guide.
+- Use conda (Miniforge): env name `lerobot`, Python 3.12. Activate with
   `conda activate lerobot` before running anything.
-- Install: `pip install lerobot` inside that env.
+- **ffmpeg required** (TorchCodec video decoding): `brew install ffmpeg`, or
+  `conda install ffmpeg=7.1.1 -c conda-forge` if torchcodec complains.
+- Install: `pip install lerobot` inside that env (extras: `lerobot[all]`, `[feetech]`, …).
 
 ## Secrets — never commit a key
 
