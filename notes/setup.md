@@ -5,21 +5,29 @@
 - Machine: macOS (Apple Silicon)
 - System Python: 3.13 (Homebrew) — **caveat below**
 
-### Python version caveat
+### Python version
 
-LeRobot has historically required **Python 3.10**, but system Python here is 3.13.
-The official guide recommends **Miniforge (conda)**, which is the cleanest way to get
-an isolated 3.10 env without touching Homebrew's Python:
+Per the [official install guide](https://huggingface.co/docs/lerobot/installation),
+lerobot needs **Python >= 3.12** (and PyTorch >= 2.10). System Python here is 3.13,
+but the guide recommends an isolated **Miniforge (conda)** env so you don't touch
+Homebrew's Python:
 
 ```bash
-# Install Miniforge (conda-forge based, open source)
+# Install Miniforge (conda-forge based, open source) — one-time, machine-wide
 wget "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
 bash "Miniforge3-$(uname)-$(uname -m).sh"
 
 # Create and activate the env
-conda create -y -n lerobot python=3.10
-conda activate lerobot
-pip install lerobot
+conda create -y -n lerobot python=3.12
+conda activate lerobot   # run this each new shell
+
+# ffmpeg is required for video decoding (TorchCodec)
+brew install ffmpeg      # Apple Silicon w/ PyTorch >= 2.10
+# fallback if torchcodec complains: conda install ffmpeg=7.1.1 -c conda-forge
+
+pip install lerobot                 # core
+# pip install 'lerobot[all]'        # all features
+# pip install 'lerobot[feetech]'    # SO100/SO101 motor support
 ```
 
 Verify the install:
@@ -49,6 +57,6 @@ Layered protection so API keys / tokens never land in a commit:
 ## TODO
 
 - [x] GitHub auth (gh, HTTPS) + gitleaks pre-commit hook
-- [ ] Install Miniforge + create the `lerobot` conda env (Python 3.10)
-- [ ] Install lerobot
+- [ ] Install Miniforge + create the `lerobot` conda env (Python 3.12)
+- [ ] Install ffmpeg + lerobot
 - [ ] Run a first example / dataset visualization
