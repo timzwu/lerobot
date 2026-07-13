@@ -23,9 +23,30 @@ library is a dependency. Code here is experiments and notes, not a shipped produ
   (PyTorch >= 2.10) per the official install guide.
 - Use conda (Miniforge): env name `lerobot`, Python 3.12. Activate with
   `conda activate lerobot` before running anything.
-- **ffmpeg required** (TorchCodec video decoding): `brew install ffmpeg`, or
-  `conda install ffmpeg=7.1.1 -c conda-forge` if torchcodec complains.
-- Install: `pip install lerobot` inside that env (extras: `lerobot[all]`, `[feetech]`, …).
+- **ffmpeg required** (TorchCodec video decoding): installed *into* the env via
+  `conda install -c conda-forge ffmpeg` (8.1.2, incl. libsvtav1).
+- Install: `pip install 'lerobot[feetech]'` — the Feetech SDK is required (SO-101 uses
+  Feetech servos). Installed: **lerobot 0.5.1, torch 2.10.0**.
+
+## Hardware — SO-101 (current state)
+
+Pre-assembled kit → assembly and `lerobot-setup-motors` are **skipped** (motor IDs were
+set at the factory). Both arms are **calibrated**; calibration lives in
+`~/.cache/huggingface/lerobot/calibration/` and persists across unplugs — do NOT
+recalibrate each session.
+
+- Arm ids (use these everywhere — teleop, record, eval): **`follower_arm`**, **`leader_arm`**
+- Ports (machine-specific, can change on replug → re-run `lerobot-find-port`):
+  follower `/dev/tty.usbmodem5B610339821`, leader `/dev/tty.usbmodem5B3D0414741`
+- **⚡ Power: 12V 5A → follower, 5V 4A → leader. Swapping them burns the motors.**
+- Flag gotcha: follower uses `--robot.*`, leader uses `--teleop.*`.
+- Teleoperation works: `bash scripts/teleop.sh`.
+- Long CLI invocations break when pasted into the terminal — **put them in `scripts/`**
+  rather than handing Tim wall-of-flags pastes.
+- `objc[...] libavdevice ... implemented in both` warnings on macOS are harmless noise.
+
+Next up: workspace (clamp the follower) → camera setup → record first dataset → train
+(ACT) → evaluate. See `notes/setup.md` for the full walkthrough and rationale.
 
 ## Secrets — never commit a key
 
