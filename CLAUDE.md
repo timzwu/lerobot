@@ -15,6 +15,8 @@ library is a dependency. Code here is experiments and notes, not a shipped produ
 - `notebooks/` — Jupyter exploration
 - `notes/` — human-facing learning notes & the *why* behind decisions (see `notes/setup.md`)
 - `scripts/` — reusable utilities worth keeping
+- `experiments/` — the imitation-learning experiments: Modal training (`modal_train.py`),
+  data-scaling sweep (`sweep.py`), 20-position eval protocol (`eval.py`), results. See its README.
 - `data/` — datasets/artifacts, **gitignored** (large files live on HF Hub)
 
 ## Environment
@@ -26,7 +28,11 @@ library is a dependency. Code here is experiments and notes, not a shipped produ
 - **ffmpeg required** (TorchCodec video decoding): installed *into* the env via
   `conda install -c conda-forge ffmpeg` (8.1.2, incl. libsvtav1).
 - Install: `pip install 'lerobot[feetech]'` — the Feetech SDK is required (SO-101 uses
-  Feetech servos). Installed: **lerobot 0.5.1, torch 2.10.0**.
+  Feetech servos). Installed: **lerobot 0.6.1, torch 2.11.0** (`pip install 'lerobot[core_scripts,feetech]'`).
+- Known harmless warning on macOS: `Class AVFFrameReceiver is implemented in both ... cv2 ... av` at startup.
+  Ignore it. Do NOT swap in conda-forge opencv/av to silence it: that pulls a second OpenMP runtime
+  next to torch's and causes real crashes (`OMP: Error #15`).
+- Training runs on Modal (`experiments/modal_train.py`); eval uses `lerobot-rollout` (0.6+; 0.5.1 used `lerobot-record`).
 
 ## Hardware — SO-101 (current state)
 
