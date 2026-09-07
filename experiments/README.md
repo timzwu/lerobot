@@ -37,8 +37,9 @@ Proves dataset -> Modal -> checkpoint -> Mac before any of our own data exists.
 modal run --detach experiments/modal_train.py --steps 2000 --batch-size 8
 # 2. parallel sweep launches (tiny)
 modal run experiments/sweep.py::sweep --sizes 5,10 --steps 200 --policy act --batch-size 8
-# 3. pull the checkpoint (exact command is printed at the end of step 1)
-modal volume get lerobot-outputs act_svla_so101_pickplace_2000/checkpoints/last/pretrained_model experiments/checkpoints/act_svla_so101_pickplace_2000
+# 3. pull the checkpoint (exact command is printed at the end of step 1; plain `modal volume get` on
+#    checkpoints/last fails because `last` is a symlink and the dir may hold a stray .tmp save file)
+modal run experiments/modal_train.py::pull --job-name act_svla_so101_pickplace_2000
 # 4. load it on the Mac
 python -c "from lerobot.policies.act.modeling_act import ACTPolicy; p=ACTPolicy.from_pretrained('experiments/checkpoints/act_svla_so101_pickplace_2000'); print(p.config)"
 ```

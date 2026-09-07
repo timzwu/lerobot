@@ -17,7 +17,9 @@ Add `--detach` after `modal run` to close the laptop while it trains:
     modal run --detach experiments/modal_train.py --steps 2000
 
 Pull a finished checkpoint to the Mac (the run prints this exact command when it ends):
-    modal volume get lerobot-outputs <job_name>/checkpoints/last/pretrained_model experiments/checkpoints/<job_name>
+    modal run experiments/modal_train.py::pull --job-name <job_name>
+    # (plain `modal volume get` on checkpoints/last fails: `last` is a symlink and the dir can hold a
+    #  stray .tmp file from the save; `pull` resolves the numbered step dir and copies file by file.)
 
 Optional: `export HF_TOKEN=...` locally before running to read private datasets / gated models
 (pi0.5 needs the PaliGemma license accepted on the Hub + a token). `export WANDB_API_KEY=...` turns on W&B.
@@ -174,10 +176,33 @@ def build_argv(
 
 
 def pull_command(job_name: str) -> str:
-    return (
-        f"modal volume get lerobot-outputs {job_name}/checkpoints/last/pretrained_model "
-        f"experiments/checkpoints/{job_name}"
+    return f"modal run experiments/modal_train.py::pull --job-name {job_name}"
+
+
+@app.local_entrypoint()
+def pull(job_name: str, dest: str = ""):
+    """Copy <job>/checkpoints/<latest step>/pretrained_model from the outputs Volume to the Mac, file by file."""
+    steps = sorted(
+        e.path.rsplit("/", 1)[-1]
+        for e in outputs.listdir(f"{job_name}/checkpoints")
+        if e.path.rsplit("/", 1)[-1].isdigit()
     )
+    if not steps:
+        raise SystemExit(f"no numbered checkpoints under {job_name}/checkpoints")
+    src = f"{job_name}/checkpoints/{steps[-1]}/pretrained_model"
+    out = Path(dest or f"experiments/checkpoints/{job_name}")
+    out.mkdir(parents=True, exist_ok=True)
+    n = 0
+    for e in outputs.listdir(src):
+        name = e.path.rsplit("/", 1)[-1]
+        if name.startswith(".tmp"):
+            continue
+        with open(out / name, "wb") as fh:
+            for chunk in outputs.read_file(e.path):
+                fh.write(chunk)
+        n += 1
+    print(f"[pull] {n} files from {src} -> {out}")
+    print(f"[pull] load with: ACTPolicy.from_pretrained('{out}')  (or the matching policy class)")
 
 
 @app.local_entrypoint()
