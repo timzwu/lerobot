@@ -114,7 +114,7 @@ When recording new persistent information:
 - Personal, internal, uncertain, unpublished, or sensitive context goes to `.agent-private/`.
 - When uncertain, default to `.agent-private/`.
 
-Conversation memory is not project memory. Before ending substantial work, update
+Conversation memory is not project memory. At the end of every working session (not only on request), update
 `.agent-private/CURRENT.md` and `.agent-private/HANDOFF.md`, and record durable facts, decisions, and
 learnings in the matching `.agent-private/` file. Before committing, check that no private-context file or
 private information has entered the staged diff (`git status`, `git diff --cached --stat`).
