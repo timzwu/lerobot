@@ -37,3 +37,4 @@ experiments/checkpoints/
 # Local agent context (private, never committed)
 .agent-private/
 CLAUDE.local.md
+logs/

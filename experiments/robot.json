@@ -1,12 +1,14 @@
 {
-  "_comment": "Machine-specific. Ports can change on replug: re-run `lerobot-find-port`. Camera indices: `lerobot-find-cameras`. Camera keys must match the dataset's observation.images.* names.",
+  "_comment": "Machine-specific. Camera names top + wrist chosen by the owner 2026-09-07; these become the dataset observation.images.* keys. Indices VERIFIED 2026-09-07 by lerobot-find-cameras on the 9-in-1 dock (permanent config): top=0 (Acer A610), wrist=1 (Innomaker). Index 2 is the Mac FaceTime camera - never use it. Ports can change on replug: re-run `lerobot-find-port`. Camera indices: `lerobot-find-cameras`. Camera keys must match the dataset's observation.images.* names.",
   "robot_type": "so101_follower",
   "port": "/dev/tty.usbmodem5B610339821",
   "id": "follower_arm",
+  "_max_relative_target_comment": "Safety clamp, degrees per control step. Small = the arm can only creep, never lunge. Raise once a policy behaves. null/absent = unclamped.",
+  "max_relative_target": 5,
   "leader_port": "/dev/tty.usbmodem5B3D0414741",
   "leader_id": "leader_arm",
   "cameras": {
-    "overhead": {"type": "opencv", "index_or_path": 0, "width": 640, "height": 480, "fps": 30},
+    "top": {"type": "opencv", "index_or_path": 0, "width": 640, "height": 480, "fps": 30},
     "wrist": {"type": "opencv", "index_or_path": 1, "width": 640, "height": 480, "fps": 30}
   },
   "async_server": "127.0.0.1:8080"

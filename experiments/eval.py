@@ -92,6 +92,10 @@ def build_command(args, task: str) -> list[str] | None:
         f"--robot.id={robot['id']}",
         f"--robot.cameras={cameras_arg(robot['cameras'])}",
     ]
+    # Safety clamp: max degrees the follower may move per control step. Keeps a bad policy from
+    # lunging into the table on a first zero-shot run. Omitted entirely when absent/null.
+    if robot.get("max_relative_target") is not None:
+        common.append(f"--robot.max_relative_target={robot['max_relative_target']}")
     if args.mode == "local":
         if not args.policy:
             sys.exit("--policy (checkpoint path or Hub id) is required for --mode local")
