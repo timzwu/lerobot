@@ -1,0 +1,21 @@
+name,position,color,bowl,task,success,failure_type,duration_s,notes,timestamp,policy,mode
+smolvla_n25_pair,1,red,left,put the red block in the left bowl,0,no_reach,62.3,not much movement,2026-09-10T19:34:12,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,2,blue,right,put the blue block in the right bowl,0,drop,62.0,"overall motion is jerky. actually adjusted well and saw wrist rotate to orient towards block, picked up but dropped again never fully lifted block off table",2026-09-10T19:36:10,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,3,red,left,put the red block in the left bowl,0,no_reach,63.0,"reaches out at offset to block, never reaches",2026-09-10T19:37:45,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,4,blue,right,put the blue block in the right bowl,1,,61.7,successfully grips first try and drops into bowl,2026-09-10T19:39:05,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,5,red,left,put the red block in the left bowl,0,touch_no_grip,63.1,touches but unable to grip multiple times,2026-09-10T19:40:21,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,6,blue,right,put the blue block in the right bowl,0,touch_no_grip,62.6,"approaches at offset to block, touches but no grip",2026-09-10T19:41:41,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,7,red,left,put the red block in the left bowl,0,touch_no_grip,61.7,touches block but stays at offset and does not grip,2026-09-10T19:43:09,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,8,blue,right,put the blue block in the right bowl,0,no_reach,62.4,arm doesn't move much,2026-09-10T19:44:44,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,9,red,left,put the red block in the left bowl,0,no_reach,62.1,"approaches at offset to block, never reaches or grips",2026-09-10T19:46:10,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,10,blue,right,put the blue block in the right bowl,0,touch_no_grip,61.7,touches block and pushes out of way but no grip,2026-09-10T19:47:36,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,11,red,left,put the red block in the left bowl,0,no_reach,61.7,arm does not move much,2026-09-10T19:48:46,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,12,blue,right,put the blue block in the right bowl,0,no_reach,61.9,arm does not move,2026-09-10T19:49:55,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,13,red,left,put the red block in the left bowl,0,touch_no_grip,62.1,"arm misses initial grip, unable to recover",2026-09-10T19:51:14,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,14,blue,right,put the blue block in the right bowl,0,touch_no_grip,62.8,"touches block but misses initial grip, fails to recover and stays at offset",2026-09-10T19:52:32,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,15,red,left,put the red block in the left bowl,0,touch_no_grip,62.1,touches block but fails to grip,2026-09-10T19:53:51,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,16,blue,right,put the blue block in the right bowl,0,no_reach,62.5,reaches out at offset to block but no touch,2026-09-10T19:55:10,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,17,red,left,put the red block in the left bowl,0,no_reach,63.7,reaches out at offset to block and gripper twitches,2026-09-10T19:56:39,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,18,blue,right,put the blue block in the right bowl,0,no_reach,62.7,arm barely moves,2026-09-10T19:57:53,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,19,red,left,put the red block in the left bowl,0,no_reach,63.0,misses first grip and attempts to recover at offset to block,2026-09-10T19:59:08,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync
+smolvla_n25_pair,20,blue,right,put the blue block in the right bowl,0,touch_no_grip,62.8,"pushes block out of the way, attempts to recover in arbitrary position",2026-09-10T20:00:40,experiments/checkpoints/smolvla_so101_blocks_n25_s0,sync

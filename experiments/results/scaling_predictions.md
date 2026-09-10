@@ -5,8 +5,8 @@ SmolVLA fine-tuned on nested subsets of the two-task pool (red→left, blue→ri
 
 | episodes (per task) | predicted successes / 20 | measured |
 |---|---|---|
-| 10 (5) | 0 | |
-| 25 (12) | 1 | |
+| 10 (5) | 0 | 0 (no_reach 15, touch_no_grip 4, drop 1) |
+| 25 (12) | 1 | 1 (no_reach 10, touch_no_grip 8, drop 1) |
 | 50 (25) | 4 | |
 | 100 (50) | — | 9 (measured first, 2026-09-09) |
 
