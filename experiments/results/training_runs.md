@@ -18,6 +18,7 @@ until the footage is reviewed.
 | 2026-09-10 | smolvla_so101_blocks_n50_s0 | SmolVLA fine-tune (sweep) | 50 episodes of the pair (25 per task) | 25 | 20,000 × 64 | ~48 | L40S | ~195 min | ≈$6.30 | (log tail lost) | scaling sweep point |
 | 2026-09-10 | smolvla_nowrist_n100 | SmolVLA fine-tune, OVERHEAD camera only (R6 ablation) | `so101_blocks_nowrist` ep 0–49 + 100–149 | 50 | 20,000 × 64 | ~24 | L40S | 111 min | ≈$3.60 | → 0.032 | wrist stream removed with `lerobot-edit-dataset remove_feature`; rename top→camera1 |
 | 2026-09-10 | smolvla_notop_n100 | SmolVLA fine-tune, WRIST camera only (R6 ablation) | `so101_blocks_notop` ep 0–49 + 100–149 | 50 | 20,000 × 64 | ~24 | L40S | 110 min | ≈$3.60 | → 0.028 | overhead stream removed; rename wrist→camera1 |
+| 2026-09-11 | pi05_fit_trial | π0.5 fine-tune, fit trial (backbone frozen, action expert only, bf16, grad checkpointing) | same 100 pair episodes | 50 | 200 × 32 | 0.1 | A100-80GB | 12.3 min incl. 14.5 GB model download | ≈$0.50 (+ two failed starts ≈$0.30: gated PaliGemma license, then a rename-map mismatch) | 0.25 → 0.19 | 18.7 GB, 3.07 s/step; output deleted |
 
 ## Comparison design (fixed 2026-09-08, before results)
 

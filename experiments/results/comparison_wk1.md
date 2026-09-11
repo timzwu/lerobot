@@ -43,3 +43,62 @@ row. Ten trials per row is too few to call either a pattern yet.
 
 Raw data: one row per trial across all four passes in `all_trials_wk1.csv` (sticker, task, outcome, failure bucket,
 notes, timestamp, checkpoint); per-pass CSVs alongside.
+
+## Scaling sweep (2026-09-11)
+
+SmolVLA at 10 / 25 / 50 / 100 episodes of the pair, same recipe, same 20 trials: 0 / 1 / 8 / 9 of 20. Blind
+prediction before the sweep: 0 / 1 / 4. Plot `scaling.png`; per-checkpoint geography `failure_geography_sweep.png`;
+details and reading in `scaling_predictions.md`. Short version: nothing works below ~12 demos per task, the jump
+is between 12 and 25 per task, and 25 → 50 per task added one success, inside the noise.
+
+## Camera ablation (R6)
+
+See `ablation_cameras.md`: both cameras 9/20, overhead only 4/20, wrist only 12/20. The wrist camera carries the grasp; the overhead view supplies state (done, relative position, where to look). Wrist alone is at least as good as both within 20-trial error.
+
+## Geography, quantified (2026-09-11)
+
+Pooling five SmolVLA pair passes (100 trials): the ten stickers nearest the zone's center succeed 50% of the time,
+the ten nearest the edges 18%, and the four corners 0 of 5 each. Distance from the arm base makes no difference
+(26% near, 31% far), so it is not reach length. Coverage explains about half of it: counting training starts
+within ~45 px of each sticker, the low-coverage half of the stickers scores 22% and the high-coverage half 46%
+(correlation 0.49). The exceptions are informative: stickers 14 and 1, on the bottom edge next to the base, have
+plenty of nearby demos and still score 0 of 5, so the bottom edge is hard for the arm itself (the wrist has to
+fold under). Lesson for the next dataset: place blocks deliberately at the edges and corners, since random
+placement under-samples them, and expect the base-side edge to stay hard regardless.
+
+## Open questions after week 1
+
+- Does success keep rising past 50 demos per task with more varied data, as the papers suggest, or is this task
+  saturated at 9/20 for reasons of precision rather than quantity?
+- When does the overhead camera earn its place? Probably with more data, and probably with tasks that need state
+  the wrist can't see: e.g. placing several colored blocks in a given order, where the sequence lives in the
+  overhead view.
+- A matched-passes sweep (same passes over the data at every subset size), since the fixed-step sweep over-trains
+  the small subsets.
+- The crossed tasks with real demos: the run on all 150 episodes, versus the 3/10 zero-shot instruction following.
+- The deliberate recovery episodes in R2 look like the cheapest good decision of the week (SmolVLA's second-try
+  grasps); a controlled test would train with and without them.
+
+## Progress scoring (2026-09-11)
+
+Every trial scored by the stage it reached: 0 never reached the block, 1 touched it but never closed on it,
+2 grasped it then dropped / collided / ran out of time, 3 success. Same idea as π0.5's task-progress rubric.
+Plot: `progress_by_model.png`.
+
+| model | never reached | reached, no grip | grasped, lost | success | mean progress / 3 |
+|---|---|---|---|---|---|
+| ACT, 100 ep, 3 passes | 4 | 12 | 3 | 1 | 1.05 |
+| ACT, 100 ep, 15 passes | 6 | 9 | 1 | 4 | 1.15 |
+| SmolVLA, 10 ep | 15 | 4 | 1 | 0 | 0.30 |
+| SmolVLA, 25 ep | 10 | 8 | 1 | 1 | 0.65 |
+| SmolVLA, 50 ep | 6 | 6 | 0 | 8 | 1.50 |
+| SmolVLA, 100 ep | 3 | 7 | 1 | 9 | 1.80 |
+| SmolVLA, 100 ep, overhead only | 8 | 8 | 0 | 4 | 1.00 |
+| SmolVLA, 100 ep, wrist only | 2 | 5 | 1 | 12 | 2.15 |
+
+Reading: the scaling curve is smoother in progress than in success (0.30 → 0.65 → 1.50 → 1.80): the 25-episode
+model had mostly learned to reach, which the 1/20 headline hides. ACT's extra training moved trials from "no
+grip" to success without changing how many never reached. Cameras: wrist-only fails less at every stage, not just
+the last one, which argues the wrist view helps the approach as well as the grasp; overhead-only's extra failures
+are in the first two stages. The middle stage, grasped then lost, is small everywhere: once these models close on
+the block they usually finish, so the bottleneck is closing on it.
