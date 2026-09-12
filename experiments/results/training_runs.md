@@ -1,7 +1,7 @@
 # Training runs
 
 Every run that started a GPU, with what it saw and what it cost. Loss curves (every 100 steps) are in
-`training_loss.csv`. Costs are A10G at ~$1.10/h unless noted. Dataset `so101_blocks` is private on the Hub
+`training_loss.csv`. Costs are A10G at ~$1.10/h unless noted. Costs before Sept 12 are GPU-only: Modal also bills CPU and RAM (about $0.32/h per card), so the true bill is 10–30% higher; the launcher's estimates include it from Sept 12. Dataset `so101_blocks` is private on the Hub
 until the footage is reviewed.
 
 | date (UTC) | job | policy | data | per task | steps × batch | passes over data | GPU | wall | cost | loss start → end | notes |
@@ -19,6 +19,9 @@ until the footage is reviewed.
 | 2026-09-10 | smolvla_nowrist_n100 | SmolVLA fine-tune, OVERHEAD camera only (R6 ablation) | `so101_blocks_nowrist` ep 0–49 + 100–149 | 50 | 20,000 × 64 | ~24 | L40S | 111 min | ≈$3.60 | → 0.032 | wrist stream removed with `lerobot-edit-dataset remove_feature`; rename top→camera1 |
 | 2026-09-10 | smolvla_notop_n100 | SmolVLA fine-tune, WRIST camera only (R6 ablation) | `so101_blocks_notop` ep 0–49 + 100–149 | 50 | 20,000 × 64 | ~24 | L40S | 110 min | ≈$3.60 | → 0.028 | overhead stream removed; rename wrist→camera1 |
 | 2026-09-11 | pi05_fit_trial | π0.5 fine-tune, fit trial (backbone frozen, action expert only, bf16, grad checkpointing) | same 100 pair episodes | 50 | 200 × 32 | 0.1 | A100-80GB | 12.3 min incl. 14.5 GB model download | ≈$0.50 (+ two failed starts ≈$0.30: gated PaliGemma license, then a rename-map mismatch) | 0.25 → 0.19 | 18.7 GB, 3.07 s/step; output deleted |
+| 2026-09-11 | pi05_so101_blocks_40000_ep0-49_100-149 (attempt 1) | π0.5 fine-tune, matched to SmolVLA (24 passes) | same 100 pair episodes | 50 | 40,000 × 32 planned | — | H100 | 6.0 h, killed at step 18,112 by the launcher's 6 h function timeout | ≈$24 (≈$9 lost past the 10k checkpoint) | 0.25 → 0.059 at 15k | 10k checkpoint + full training state saved; resumed exactly (attempt 2) |
+| 2026-09-12 | pi05_so101_blocks_40000_ep0-49_100-149 (attempt 2, resumed from 10k) | π0.5 fine-tune, matched to SmolVLA (24 passes) | same 100 pair episodes | 50 | 40,000 × 32 | 24 | H100 | 9.9 h for steps 10k→40k (1.18 s/step); ~13.2 h of H100 in total across both attempts | ≈$41 this leg (≈$65 total incl. attempt 1; GPU-only) | 0.25 → 0.049 | full training state resumed exactly; checkpoints every 10k; the old launcher wrote this leg to a `-20260911-221316` suffixed folder (bug fixed Sept 12); R7 eval checkpoint |
+| 2026-09-12 | pi05_2card_trial | π0.5 fine-tune, 2-card trial (accelerate launch, DDP) | same 100 pair episodes | 50 | 200 × 32 (16 per card) | 0.1 | 2 × H100 | 5.4 min incl. weight load; 0.66 s/step steady state | ≈$0.80 | 0.25 → 0.19 | first multi-card run: global batch confirmed (checkpoint stores num_processes 2, per-card batch 16; 32 samples/step); 1.77x faster than one H100 = 0.88 per-card scaling, now the launcher's estimate constant; output deleted |
 
 ## Comparison design (fixed 2026-09-08, before results)
 
